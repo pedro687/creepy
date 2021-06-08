@@ -6,6 +6,7 @@ import com.creepy.creepycore.api.users.utils.UserConverter;
 import com.creepy.creepycore.shared.configurations.PasswordEncoder;
 import com.creepy.creepycore.shared.domain.user.User;
 import com.creepy.creepycore.shared.domain.user.enums.Gender;
+import com.creepy.creepycore.shared.exceptions.EmailAlreadyExistException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
@@ -73,5 +74,24 @@ public class UserControllerTest {
             .andExpect(MockMvcResultMatchers.status().isCreated())
             .andExpect(MockMvcResultMatchers.jsonPath("username").value(userDTO.getUsername()))
             .andExpect(MockMvcResultMatchers.jsonPath("email").value(userDTO.getEmail()));
+    }
+
+    @Test
+    @DisplayName("Não deve cadastrar com um email ja existente")
+    void shouldNotBeAbleRegisterAnUser() throws Exception {
+        BDDMockito.given(userService.createUser(Mockito.any(UserDTO.class))).willThrow(
+            new EmailAlreadyExistException("Email Already Exist!")
+        );
+
+        UserDTO userDTO = createUserDto();
+        String json = new ObjectMapper().writeValueAsString(userDTO);
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post(BASE_URL.concat("/register"))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(json);
+
+        mvc.perform(request)
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 }
