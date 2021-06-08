@@ -21,10 +21,10 @@ public class UserController implements UserResource {
 
     @Override
     public ResponseEntity<?> create(UserDTO userDTO) {
-       try {
-           return ResponseEntity.status(HttpStatus.CREATED).body(userService.createUser(userDTO));
-       }catch (EmailAlreadyExistException e) {
-           return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-       }
+        try {
+            return ResponseEntity.status(HttpStatus.CREATED).body(userService.createUser(userDTO));
+        } catch (EmailAlreadyExistException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
     }
 }

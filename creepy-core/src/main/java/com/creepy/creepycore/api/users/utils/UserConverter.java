@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class UserConverter {
+
     public User toEntity(UserDTO userDTO) {
         User user = new User();
         user.setCity(userDTO.getCity());
