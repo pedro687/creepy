@@ -1,0 +1,21 @@
+package com.creepy.creepycore.shared.infra.utils;
+
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.stereotype.Component;
+
+@Getter
+@Setter
+public class TellphoneValidator {
+    private String number;
+
+    public TellphoneValidator(String number) {
+        if (number == null) {
+            throw new IllegalArgumentException("numero é obrigatorio!");
+        }
+        if (!number.matches("^\\([1-9]{2}\\) (?:[2-8]|9[1-9])[0-9]{3}\\-[0-9]{4}$\n")){
+            throw new IllegalArgumentException("Numero invalido");
+        }
+        this.number = number;
+    }
+}
