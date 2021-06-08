@@ -12,7 +12,7 @@ public class EmailValidator {
     public EmailValidator(String email) {
         if (email == null ||
                 !email.matches("^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$")) {
-            throw new IllegalArgumentException("Email inválido");
+            throw new IllegalArgumentException("Invalid Email");
         }
         this.email = email;
     }
